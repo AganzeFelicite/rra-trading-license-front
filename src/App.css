@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-container {
+  display: flex;
+  flex: 1;
+}
+
+.dashboard-container {
+  display: flex;
+  flex: 1;
+}
+
+.dashboard-column {
+  flex: 1;
+}
+
+.form-column {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end; /* Align the form to the right */
+}
+
+/* Additional styling as needed */
