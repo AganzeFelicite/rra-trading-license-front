@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,10 +10,19 @@ import Header from "./components/Header";
 import MyTradingLicenseForm from "./components/TradinLisenceForm";
 import Footer from "./components/Footer";
 import Login from "./components/Login";
+import SignupForm from "./components/Signup";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showTradingLicense, setShowTradingLicense] = useState(false);
+  const [refreshFlag, setRefreshFlag] = useState(false); // Define the refreshFlag state variable
+
+  useEffect(() => {
+    if (refreshFlag) {
+      window.location.reload();
+      setRefreshFlag(false);
+    }
+  }, [refreshFlag]);
 
   const handleLogin = (flag) => {
     if (flag) {
@@ -27,6 +36,7 @@ function App() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setShowTradingLicense(false);
+    setRefreshFlag(true); // Set refreshFlag to true when logging out to trigger refresh
   };
 
   const handleRegistrationClick = () => {
@@ -68,11 +78,12 @@ function App() {
                 )
               }
             />
+            <Route path="/signup" element={<SignupForm />} />
             <Route path="/" element={<Navigate to="/logout" />} />
             <Route path="/" element={<Navigate to="/login" />} />
           </Routes>
         </div>
-        <Footer />
+        <Footer className="footer" />
       </div>
     </Router>
   );

@@ -36,31 +36,21 @@
     transform: rotate(360deg);
   }
 }
-
-.App {
+/* App.css */
+.app-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100vh; /* Ensure the container occupies the full viewport height */
 }
 
 .content-container {
-  display: flex;
-  flex: 1;
+  flex-grow: 1; /* Grow to occupy the available space */
+  position: relative; /* Ensure children with absolute positioning are relative to this container */
 }
 
-.dashboard-container {
-  display: flex;
-  flex: 1;
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
-
-.dashboard-column {
-  flex: 1;
-}
-
-.form-column {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end; /* Align the form to the right */
-}
-
-/* Additional styling as needed */

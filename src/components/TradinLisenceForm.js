@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 const MyTradingLicenseForm = () => {
+  const [isloading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     typeOfActivity: "",
     category: "",
@@ -42,23 +43,29 @@ const MyTradingLicenseForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    setIsLoading(true);
+
     try {
-      const response = await fetch("/trading-licence/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "http://127.0.0.1:8080/api/v1/trading-lisence/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       if (response.ok) {
         console.log("Form submitted successfully!");
-        // Reset form fields if needed
+        setIsLoading(false);
       } else {
         console.error("Failed to submit form");
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+      setIsLoading(false);
     }
   };
 
@@ -532,6 +539,11 @@ const MyTradingLicenseForm = () => {
           />
         </div>
       </div>
+      {isloading && (
+        <button className="mt-4 p-2 bg-green-700 text-yellow-400 rounded ">
+          loading .....
+        </button>
+      )}
       <button
         type="submit"
         className="mt-4 p-2 bg-green-700 text-yellow-400 rounded"
