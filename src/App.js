@@ -11,58 +11,51 @@ import MyTradingLicenseForm from "./components/TradinLisenceForm";
 import Footer from "./components/Footer";
 import Login from "./components/Login";
 import SignupForm from "./components/Signup";
+import DeclarationForm from "./components/Declaraion";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showTradingLicense, setShowTradingLicense] = useState(false);
-  const [refreshFlag, setRefreshFlag] = useState(false); // Define the refreshFlag state variable
+  const [selectedMenuItem, setSelectedMenuItem] = useState(null);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   useEffect(() => {
-    if (refreshFlag) {
-      window.location.reload();
-      setRefreshFlag(false);
-    }
-  }, [refreshFlag]);
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth < 768); // Adjust the breakpoint as needed
+    };
+
+    checkScreenSize();
+
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
 
   const handleLogin = (flag) => {
-    if (flag) {
-      setIsLoggedIn(true);
-      return true;
-    } else {
-      return false;
-    }
+    setIsLoggedIn(flag);
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    setShowTradingLicense(false);
-    setRefreshFlag(true); // Set refreshFlag to true when logging out to trigger refresh
+    setSelectedMenuItem(null);
   };
 
-  const handleRegistrationClick = () => {
-    setShowTradingLicense(true);
+  const handleMenuItemClick = (menuItem) => {
+    setSelectedMenuItem(menuItem);
   };
 
   return (
     <Router>
-      <div className="App">
+      <div className="min-h-screen flex flex-col">
         <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
-        <div className="content-container flex">
+        <div className="flex-1 flex flex-col lg:flex-row">
           <Routes>
             <Route
               path="/dashboard"
               element={
                 isLoggedIn ? (
-                  <>
-                    <div className="dashboard-column flex-1">
-                      <AdminDashBoard onRegister={handleRegistrationClick} />
-                    </div>
-                    {showTradingLicense && (
-                      <div className="form-column flex-1">
-                        <MyTradingLicenseForm />
-                      </div>
-                    )}
-                  </>
+                  <AdminDashBoard onMenuItemClick={handleMenuItemClick} />
                 ) : (
                   <Navigate to="/login" />
                 )
@@ -79,9 +72,18 @@ function App() {
               }
             />
             <Route path="/signup" element={<SignupForm />} />
-            <Route path="/" element={<Navigate to="/logout" />} />
             <Route path="/" element={<Navigate to="/login" />} />
           </Routes>
+          {/* Render different components based on the selected menu item */}
+          {selectedMenuItem && (
+            <div className="form-column flex-1 lg:mt-0 mt-4">
+              {selectedMenuItem === "Trading License" && (
+                <MyTradingLicenseForm />
+              )}
+              {selectedMenuItem === "New Users" && <SignupForm />}
+              {selectedMenuItem === "declaration" && <DeclarationForm />}
+            </div>
+          )}
         </div>
         <Footer className="footer" />
       </div>

@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 
-const AdminDashBoard = ({ onRegister }) => {
-  const showTradingLicense = () => {
-    onRegister(true);
+const AdminDashboard = ({ onMenuItemClick }) => {
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleMenuItemClick = (menuItem) => {
+    onMenuItemClick(menuItem);
+    toggleDropdown(); // Close the dropdown after clicking a menu item
   };
 
   return (
@@ -14,13 +21,64 @@ const AdminDashBoard = ({ onRegister }) => {
           </div>
           <div className="flex">
             <button
-              onClick={showTradingLicense} // Corrected onClick event
+              onClick={toggleDropdown}
               className="bg-green-950 hover:bg-lime-300 text-white font-bold py-2 px-4 rounded m-2"
+              aria-haspopup="true"
             >
               Registration
+              {isDropdownOpen && (
+                <div>
+                  <div
+                    className="absolute z-10 mt-2 w-56  origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    role="menu"
+                    aria-orientation="vertical"
+                    aria-labelledby="menu-button"
+                    tabIndex="-1"
+                  >
+                    <a
+                      href="#"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      role="menuitem"
+                      tabIndex="-1"
+                      onClick={() => handleMenuItemClick("Trading License")}
+                    >
+                      Trading License
+                    </a>
+                    <a
+                      href="#"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      role="menuitem"
+                      tabIndex="-1"
+                      onClick={() => handleMenuItemClick("Other Taxes")}
+                    >
+                      Other Taxes
+                    </a>
+                    <a
+                      href="#"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      role="menuitem"
+                      tabIndex="-1"
+                      onClick={() => handleMenuItemClick("New Users")}
+                    >
+                      New Users
+                    </a>
+                    <a
+                      href="#"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      role="menuitem"
+                      tabIndex="-1"
+                      onClick={() => handleMenuItemClick("Delete")}
+                    >
+                      Delete
+                    </a>
+                  </div>
+                </div>
+              )}
             </button>
-
-            <button className="bg-green-950 hover:bg-lime-300 text-white font-bold py-2 px-4 rounded m-2">
+            <button
+              className="bg-green-950 hover:bg-lime-300 text-white font-bold py-2 px-4 rounded m-2"
+              onClick={() => handleMenuItemClick("declaration")}
+            >
               Declaration
             </button>
             <button className="bg-green-950 hover:bg-lime-300 text-white font-bold py-2 px-4 rounded m-2">
@@ -49,4 +107,4 @@ const AdminDashBoard = ({ onRegister }) => {
   );
 };
 
-export default AdminDashBoard;
+export default AdminDashboard;

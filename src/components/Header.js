@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import LogoImage from "../assets/Rwanda-Revenue-Authority-logo.png";
 import { Link } from "react-router-dom";
 
-const Header = ({ isLoggedIn }) => {
+const Header = ({ isLoggedIn, onLogout }) => {
+  // Add onLogout prop
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -20,14 +21,12 @@ const Header = ({ isLoggedIn }) => {
         </div>
         <div className="px-4">
           {isLoggedIn ? (
-            <Link to={"/logout"}>
-              <button
-                // onClick={onClick}
-                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              >
-                Logout
-              </button>
-            </Link>
+            <button
+              onClick={onLogout} // Call onLogout function when logout button is clicked
+              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Logout
+            </button>
           ) : (
             <div className="flex space-x-4">
               <Link to={"/signup"}>
@@ -49,7 +48,8 @@ const Header = ({ isLoggedIn }) => {
           <h1>Welcome to RLGMS</h1>
         </div>
         <div className="text-yellow-400">
-          <h4>logined: {isLoggedIn ? "aganze" : "Not logged in"}</h4>
+          <h4>Logged in: {isLoggedIn ? "Yes" : "No"}</h4>{" "}
+          {/* Corrected spelling */}
           <div>{currentTime.toString()}</div>
         </div>
       </div>
