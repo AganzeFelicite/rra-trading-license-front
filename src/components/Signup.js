@@ -1,28 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import useFetch from "../Hooks/useFetch";
 
 const Signup = () => {
+  const signupLink = "http://127.0.0.1:8080/api/v1/signup";
+  const rolesLink = "http://127.0.0.1:8080/api/v1/roles";
+  const [roles, setRoles] = useState([]);
+  const { data, isPending, error } = useFetch(rolesLink);
+  useEffect(() => {
+    if (data) {
+      setRoles(data);
+    }
+  }, [data]);
+
+  const [isloading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phoneNumber: "",
     nId: "",
-    role: {},
+    role: "",
     password: "",
+    firstLogin: true,
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserData({
-      ...userData,
+
+    setUserData((prevUserData) => ({
+      ...prevUserData,
       [name]: value,
-    });
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(userData);
-    // onSignup(userData);
+    setIsLoading(true);
+    fetch(signupLink, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("user created");
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log("some error while saving the Data");
+      });
   };
 
   return (
@@ -134,9 +163,12 @@ const Signup = () => {
               className="block w-full p-2 border border-green-500 rounded"
               required
             >
-              <option value="">Select a role</option>
-              <option value="admin">Admin Role</option>
-              <option value="Monthly">Normal Users</option>
+              <option>select role</option>
+              {roles.map((data) => (
+                <option id={data.id} value={data.name}>
+                  {data.name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="mb-6 col-span-2">
@@ -158,12 +190,21 @@ const Signup = () => {
           </div>
         </div>
         <div className="flex items-center justify-center">
-          <button
-            type="submit"
-            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Sign Up
-          </button>
+          {!isloading ? (
+            <button
+              type="submit"
+              className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Sign Up
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Creating User ...
+            </button>
+          )}
         </div>
       </form>
     </div>
