@@ -13,8 +13,8 @@ const AdminDashboard = ({ onMenuItemClick }) => {
   };
 
   return (
-    <div className="dashboard">
-      <main className="bg-white py-5 flex flex-col">
+    <div className="dashboard p-10">
+      <main className="bg-white py-5 flex flex-col ">
         <div className="p-4">
           <div className="bg-lime-300 p-2">
             <h4>Local government Tax</h4>

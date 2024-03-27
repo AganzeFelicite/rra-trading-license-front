@@ -4,43 +4,45 @@ const DeclarationForm = () => {
   const [isloading, setIsLoading] = useState(false);
   const [isSubmited, setIsSubmited] = useState(false);
   const [formData, setFormData] = useState({
-    TIN: "",
-    NID: "",
-    taxpayerOrCompanyName: "",
+    tinNo: "",
+    nationalId: "",
+    companyName: "",
     taxType: "",
     year: "",
     declarationOptions: "",
   });
-
+  const [declared, setDeclared] = useState(null);
   const handleChange = (e) => {
     const value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
     setFormData({ ...formData, [e.target.name]: value });
   };
-
+  console.log(declared);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const response = await fetch(
-        "http://example.com/api/declaration/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-      if (response.ok) {
-        console.log("Form submitted successfully!");
-        setIsLoading(false);
-        setIsSubmited(true);
-      } else {
-        console.error("Failed to submit form");
-        setIsLoading(false);
-      }
+      await fetch("http://127.0.0.1:8080/api/v1/new-declaration", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log("Form submitted successfully!");
+            setIsLoading(false);
+            setIsSubmited(true);
+          }
+          return response.json();
+        })
+        .then((data) => setDeclared(data))
+        .catch((err) => {
+          console.error("Failed to submit form");
+          setIsLoading(false);
+        });
     } catch (error) {
       console.error("Error submitting form:", error);
       setIsLoading(false);
@@ -64,23 +66,20 @@ const DeclarationForm = () => {
               </label>
               <input
                 type="text"
-                name="TIN"
-                value={formData.TIN}
+                name="tinNo"
+                value={formData.tinNo}
                 onChange={handleChange}
                 className="block w-full p-2 border border-green-500 rounded"
               />
             </div>
             <div className="w-full lg:w-1/2 p-2">
-              <label
-                htmlFor="NID"
-                className="block mb-2 text-sm font-medium text-gray-700"
-              >
+              <label className="block mb-2 text-sm font-medium text-gray-700">
                 NID:
               </label>
               <input
                 type="text"
-                name="NID"
-                value={formData.NID}
+                name="nationalId"
+                value={formData.nationalId}
                 onChange={handleChange}
                 className="block w-full p-2 border border-green-500 rounded"
               />
@@ -94,8 +93,8 @@ const DeclarationForm = () => {
               </label>
               <input
                 type="text"
-                name="taxpayerOrCompanyName"
-                value={formData.taxpayerOrCompanyName}
+                name="companyName"
+                value={formData.companyName}
                 onChange={handleChange}
                 className="block w-full p-2 border border-green-500 rounded"
               />
@@ -163,7 +162,18 @@ const DeclarationForm = () => {
           </button>
         </form>
       ) : (
-        <div>
+        <div class="items-center justify-center p-14">
+          <div className="flex bg-lime-300 p-2 space-x-4">
+            <div className="flex-grow">
+              <h4>TIN: {declared?.tinNo}</h4>
+            </div>
+            <div className="flex-grow">
+              <h4>Tax payer Name: {declared?.taxPayer}</h4>
+            </div>
+            <div className="flex-grow">
+              <h4>Tax Type: {declared?.taxType}</h4>
+            </div>
+          </div>
           <table class="table-fixed">
             <thead>
               <tr>
@@ -177,37 +187,19 @@ const DeclarationForm = () => {
                 <th class="w-1/4 px-4 py-2">Acknowldgement</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td class="border px-4 py-2">Intro to CSS</td>
-                <td class="border px-4 py-2">Adam</td>
-                <td class="border px-4 py-2">858</td>
-              </tr>
+            <tbody class="">
               <tr class="bg-gray-100">
-                <td class="border px-4 py-2">
-                  A Long and Winding Tour of the History of UI Frameworks and
-                  Tools and the Impact on Design
+                <td class="border px-1 py-2">1</td>
+                <td class="border px-2 py-2">
+                  <a class="underline text-blue-500">{declared?.documentNo}</a>
                 </td>
-                <td class="border px-4 py-2">Adam</td>
-                <td class="border px-4 py-2">112</td>
-                <td class="border px-4 py-2">112</td>
-                <td class="border px-4 py-2">112</td>
-                <td class="border px-4 py-2">112</td>
-                <td class="border px-4 py-2">112</td>
-                <td class="border px-4 py-2">112</td>
-              </tr>
-              <tr class="bg-gray-100">
-                <td class="border px-4 py-2">
-                  A Long and Winding Tour of the History of UI Frameworks and
-                  Tools and the Impact on Design
-                </td>
-                <td class="border px-4 py-2">Adam</td>
-                <td class="border px-4 py-2">112</td>
-                <td class="border px-4 py-2">112</td>
-                <td class="border px-4 py-2">112</td>
-                <td class="border px-4 py-2">112</td>
-                <td class="border px-4 py-2">112</td>
-                <td class="border px-4 py-2">112</td>
+                <td class="border px-2 py-2">{declared?.companyName}</td>
+                <td class="border px-2 py-2">{declared?.taxPeriod}</td>
+
+                <td class="border px-4 py-2">{declared?.dueDate}</td>
+                <td class="border px-4 py-2">{declared?.year}</td>
+                <td class="border px-4 py-2">{declared?.status}</td>
+                <td class="border px-4 py-2">{declared?.acknowlegement}</td>
               </tr>
             </tbody>
           </table>
