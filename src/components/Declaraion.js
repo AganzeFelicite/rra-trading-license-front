@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const DeclarationForm = () => {
   const [isloading, setIsLoading] = useState(false);
   const [isSubmited, setIsSubmited] = useState(false);
+  const [token, setToken] = useState(null);
   const [formData, setFormData] = useState({
     tinNo: "",
     nationalId: "",
@@ -11,6 +12,10 @@ const DeclarationForm = () => {
     year: "",
     declarationOptions: "",
   });
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setToken(token);
+  }, []);
   const [declared, setDeclared] = useState(null);
   const handleChange = (e) => {
     const value =
@@ -27,7 +32,9 @@ const DeclarationForm = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
+
         body: JSON.stringify(formData),
       })
         .then((response) => {

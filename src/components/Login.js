@@ -4,6 +4,7 @@ const Login = ({ onLogin }) => {
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
+    role: "",
   });
 
   const handleChange = (e) => {
@@ -13,13 +14,31 @@ const Login = ({ onLogin }) => {
       [name]: value,
     });
   };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Call the onLogin function passed as props
-    onLogin(credentials.email, credentials.password);
-  };
 
+    try {
+      const response = await fetch("http://127.0.0.1:8080/api/v1/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("role", data.user.role);
+        onLogin(true, data.user.role);
+      } else {
+        console.error("Login failed");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
+  };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <form
@@ -27,6 +46,26 @@ const Login = ({ onLogin }) => {
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
       >
         <h2 className="text-2xl text-center font-bold mb-4">Login</h2>
+        <div className="mb-4">
+          <label
+            htmlFor="role"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Role
+          </label>
+          <select
+            name="role"
+            value={credentials.role}
+            onChange={handleChange}
+            className="block w-full p-2 border border-green-500 rounded"
+            required
+          >
+            <option>select role</option>
+
+            <option value="ADMIN">ADMIN</option>
+            <option value="USER">Tax payer</option>
+          </select>
+        </div>
         <div className="mb-4">
           <label
             htmlFor="email"

@@ -13,9 +13,23 @@ import Login from "./components/Login";
 import SignupForm from "./components/Signup";
 import DeclarationForm from "./components/Declaraion";
 
+import RoleBasedComponent from "./components/RoleBasedComponent";
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const storedRole = localStorage.getItem("role");
+
+    if (storedToken && storedRole) {
+      setIsLoggedIn(true);
+      setUserRole(storedRole);
+    }
+  }, []);
+
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   useEffect(() => {
@@ -24,7 +38,6 @@ function App() {
     };
 
     checkScreenSize();
-
     window.addEventListener("resize", checkScreenSize);
 
     return () => {
@@ -32,13 +45,17 @@ function App() {
     };
   }, []);
 
-  const handleLogin = (flag) => {
+  const handleLogin = (flag, role) => {
     setIsLoggedIn(flag);
+    setUserRole(role);
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     setSelectedMenuItem(null);
+    setUserRole(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
   };
 
   const handleMenuItemClick = (menuItem) => {
@@ -75,13 +92,12 @@ function App() {
             <Route path="/" element={<Navigate to="/login" />} />
           </Routes>
           {/* Render different components based on the selected menu item */}
-          {selectedMenuItem && (
+          {selectedMenuItem && userRole && (
             <div className="form-column flex-1 lg:mt-0 mt-4">
-              {selectedMenuItem === "Trading License" && (
-                <MyTradingLicenseForm />
-              )}
-              {selectedMenuItem === "New Users" && <SignupForm />}
-              {selectedMenuItem === "declaration" && <DeclarationForm />}
+              <RoleBasedComponent
+                role={userRole}
+                selectedMenuItem={selectedMenuItem}
+              />
             </div>
           )}
         </div>

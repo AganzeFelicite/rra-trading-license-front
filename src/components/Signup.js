@@ -1,28 +1,60 @@
-import React, { useState, useEffect } from "react";
-import useFetch from "../Hooks/useFetch";
+import React, { useState } from "react";
+
+function sendEmail(to, password, userName) {
+  const emailData = {
+    to: to,
+    subject: "Your New Password FROM RRA",
+    body: `
+      Dear ${userName},
+
+      We're excited to inform you that your new password has been successfully generated! Here are the details:
+
+      New Password: ${password}
+
+      You can now use this password to login to your account. For security purposes, we recommend modifying your password after your first login.
+
+      If you have any questions or need assistance, feel free to reach out to our support team.
+
+      Happy browsing!
+
+      Best regards,
+      The Management Team
+    `,
+  };
+
+  fetch("http://localhost:8080/api/v1/send-email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(emailData),
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log("Email sent successfully");
+      } else {
+        console.error("Failed to send email");
+      }
+    })
+    .catch((error) => {
+      console.error("Error sending email:", error);
+    });
+}
 
 const Signup = () => {
-  const signupLink = "http://127.0.0.1:8080/api/v1/signup";
-  const rolesLink = "http://127.0.0.1:8080/api/v1/roles";
-  const [roles, setRoles] = useState([]);
-  const { data, isPending, error } = useFetch(rolesLink);
-  useEffect(() => {
-    if (data) {
-      setRoles(data);
-    }
-  }, [data]);
-
+  const signupLink = "http://127.0.0.1:8080/api/v1/auth/register";
   const [isloading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phoneNumber: "",
-    nId: "",
+    nid: "",
     role: "",
     password: "",
     firstLogin: true,
   });
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,6 +79,13 @@ const Signup = () => {
         if (response.ok) {
           console.log("user created");
           setIsLoading(false);
+          sendEmail(
+            userData.email,
+            userData.password,
+            `${userData.firstName} ${userData.lastName}`
+          );
+          setShowPopup(true); // Show the pop-up
+          setTimeout(() => setShowPopup(false), 3000); // Hide the pop-up after 3 seconds
         }
       })
       .catch((err) => {
@@ -56,6 +95,13 @@ const Signup = () => {
 
   return (
     <div className="flex justify-center  bg-gray-100">
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-green-500 text-white p-4 rounded-md">
+            Email sent successfully!
+          </div>
+        </div>
+      )}
       <form
         onSubmit={handleSubmit}
         className="max-w-md w-full bg-white shadow-md rounded px-3 pt-2 m-1 pb-8"
@@ -141,8 +187,8 @@ const Signup = () => {
             </label>
             <input
               type="text"
-              name="nId"
-              value={userData.nId}
+              name="nid"
+              value={userData.nid}
               onChange={handleChange}
               className="block w-full p-2 border border-green-500 rounded"
               placeholder="Enter your national ID"
@@ -164,11 +210,9 @@ const Signup = () => {
               required
             >
               <option>select role</option>
-              {roles.map((data) => (
-                <option id={data.id} value={data.name}>
-                  {data.name}
-                </option>
-              ))}
+
+              <option value="ADMIN">ADMIN</option>
+              <option value="USER">Tax payer</option>
             </select>
           </div>
           <div className="mb-6 col-span-2">
