@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import TradingLicenseDeclaration from "./TaxDeclarationForm";
 
 const DeclarationForm = () => {
   const [isloading, setIsLoading] = useState(false);
   const [isSubmited, setIsSubmited] = useState(false);
+  const [linkClicked, setLinkClicked] = useState(false);
   const [token, setToken] = useState(null);
   const [formData, setFormData] = useState({
     tinNo: "",
@@ -11,6 +13,8 @@ const DeclarationForm = () => {
     taxType: "",
     year: "",
     declarationOptions: "",
+    turnOver: 0.0,
+    dueTax: 0.0,
   });
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -41,6 +45,7 @@ const DeclarationForm = () => {
           if (response.ok) {
             console.log("Form submitted successfully!");
             setIsLoading(false);
+
             setIsSubmited(true);
           }
           return response.json();
@@ -169,48 +174,63 @@ const DeclarationForm = () => {
           </button>
         </form>
       ) : (
-        <div class="items-center justify-center p-14">
-          <div className="flex bg-lime-300 p-2 space-x-4">
-            <div className="flex-grow">
-              <h4>TIN: {declared?.tinNo}</h4>
+        <>
+          {!linkClicked ? (
+            <div className="items-center justify-center p-14">
+              <div className="flex bg-lime-300 p-2 space-x-4">
+                <div className="flex-grow">
+                  <h4>TIN: {declared?.tinNo}</h4>
+                </div>
+                <div className="flex-grow">
+                  <h4>Tax payer Name: {declared?.taxPayer}</h4>
+                </div>
+                <div className="flex-grow">
+                  <h4>Tax Type: {declared?.taxType}</h4>
+                </div>
+              </div>
+              <table className="table-fixed">
+                <thead>
+                  <tr>
+                    <th className="w-1/4 px-4 py-2">SL no</th>
+                    <th className="w-1/4 px-4 py-2">Document No</th>
+                    <th className="w-1/4 px-4 py-2">Declaration For</th>
+                    <th className="w-1/4 px-4 py-2">Tax Period</th>
+                    <th className="w-1/4 px-4 py-2">Duedate</th>
+                    <th className="w-1/4 px-4 py-2">year</th>
+                    <th className="w-1/4 px-4 py-2">Status</th>
+                    <th className="w-1/4 px-4 py-2">Acknowldgement</th>
+                  </tr>
+                </thead>
+                <tbody className="">
+                  <tr className="bg-gray-100">
+                    <td className="border px-1 py-2">1</td>
+                    <td className="border px-2 py-2">
+                      <a
+                        onClick={() => setLinkClicked(true)}
+                        className="underline text-blue-500"
+                      >
+                        {declared?.documentNo}
+                      </a>
+                    </td>
+                    <td className="border px-2 py-2">
+                      {declared?.companyName}
+                    </td>
+                    <td className="border px-2 py-2">{declared?.taxPeriod}</td>
+                    <td className="border px-4 py-2">{declared?.dueDate}</td>
+                    <td className="border px-4 py-2">{declared?.year}</td>
+                    <td className="border px-4 py-2">{declared?.status}</td>
+                    <td className="border px-4 py-2">
+                      {declared?.acknowlegement}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div className="flex-grow">
-              <h4>Tax payer Name: {declared?.taxPayer}</h4>
-            </div>
-            <div className="flex-grow">
-              <h4>Tax Type: {declared?.taxType}</h4>
-            </div>
-          </div>
-          <table class="table-fixed">
-            <thead>
-              <tr>
-                <th class="w-1/4 px-4 py-2">SL no</th>
-                <th class="w-1/4 px-4 py-2">Document No</th>
-                <th class="w-1/4 px-4 py-2">Declaration For</th>
-                <th class="w-1/4 px-4 py-2">Tax Period</th>
-                <th class="w-1/4 px-4 py-2">Duedate</th>
-                <th class="w-1/4 px-4 py-2">year</th>
-                <th class="w-1/4 px-4 py-2">Status</th>
-                <th class="w-1/4 px-4 py-2">Acknowldgement</th>
-              </tr>
-            </thead>
-            <tbody class="">
-              <tr class="bg-gray-100">
-                <td class="border px-1 py-2">1</td>
-                <td class="border px-2 py-2">
-                  <a class="underline text-blue-500">{declared?.documentNo}</a>
-                </td>
-                <td class="border px-2 py-2">{declared?.companyName}</td>
-                <td class="border px-2 py-2">{declared?.taxPeriod}</td>
-
-                <td class="border px-4 py-2">{declared?.dueDate}</td>
-                <td class="border px-4 py-2">{declared?.year}</td>
-                <td class="border px-4 py-2">{declared?.status}</td>
-                <td class="border px-4 py-2">{declared?.acknowlegement}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          ) : null}
+        </>
+      )}
+      {linkClicked && declared && (
+        <TradingLicenseDeclaration declaration={declared} />
       )}
     </div>
   );

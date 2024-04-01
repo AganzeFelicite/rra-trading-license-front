@@ -14,6 +14,7 @@ import SignupForm from "./components/Signup";
 import DeclarationForm from "./components/Declaraion";
 
 import RoleBasedComponent from "./components/RoleBasedComponent";
+import DeclarationDetails from "./components/DeclarationTable";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -56,6 +57,7 @@ function App() {
     setUserRole(null);
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("user");
   };
 
   const handleMenuItemClick = (menuItem) => {
@@ -78,6 +80,18 @@ function App() {
                 )
               }
             />
+            {userRole === "ADMIN" && (
+              <Route
+                path="/trading-license"
+                element={
+                  selectedMenuItem === "Declarations table" ? (
+                    <DeclarationDetails />
+                  ) : (
+                    <AdminDashBoard onMenuItemClick={handleMenuItemClick} />
+                  )
+                }
+              />
+            )}
             <Route
               path="/login"
               element={

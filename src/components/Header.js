@@ -5,7 +5,21 @@ import { Link } from "react-router-dom";
 const Header = ({ isLoggedIn, onLogout }) => {
   // Add onLogout prop
   const [currentTime, setCurrentTime] = useState(new Date());
-
+  const [user, setUser] = useState("");
+  useEffect(() => {
+    const userString = localStorage.getItem("user");
+    if (userString !== null) {
+      try {
+        const user = JSON.parse(userString);
+        setUser(user);
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+        setUser(null);
+      }
+    } else {
+      setUser(null);
+    }
+  }, []);
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
@@ -48,7 +62,12 @@ const Header = ({ isLoggedIn, onLogout }) => {
           <h1>Welcome to RLGMS</h1>
         </div>
         <div className="text-yellow-400">
-          <h4>Logged in: {isLoggedIn ? "Yes" : "No"}</h4>{" "}
+          <h4>
+            Logged in:{" "}
+            {user && isLoggedIn
+              ? user["firstName"] + " " + user["lastName"]
+              : "No user logined in"}
+          </h4>{" "}
           {/* Corrected spelling */}
           <div>{currentTime.toString()}</div>
         </div>

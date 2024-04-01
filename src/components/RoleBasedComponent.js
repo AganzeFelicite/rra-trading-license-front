@@ -1,5 +1,5 @@
 import React from "react";
-import MyTradingLicenseForm from "./TaxDeclarationForm";
+import MyTradingLicenseForm from "./TradinLisenceForm";
 import SignupForm from "./Signup";
 import DeclarationForm from "./Declaraion";
 
@@ -7,7 +7,11 @@ const RoleBasedComponent = ({ role, selectedMenuItem }) => {
   if (role === "ADMIN") {
     if (selectedMenuItem === "Trading License") {
       return <MyTradingLicenseForm />;
-    } else if (selectedMenuItem === "New Users") {
+    }
+    if (selectedMenuItem === "declaration") {
+      return <DeclarationForm />;
+    }
+    if (selectedMenuItem === "New Users") {
       return <SignupForm />;
     }
   } else if (role === "USER" && selectedMenuItem === "declaration") {

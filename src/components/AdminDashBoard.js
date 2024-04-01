@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const AdminDashboard = ({ onMenuItemClick }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -78,6 +79,36 @@ const AdminDashboard = ({ onMenuItemClick }) => {
                         onClick={() => handleMenuItemClick("Delete")}
                       >
                         Delete
+                      </a>
+                      <Link to="/trading-license">
+                        <a
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                          tabIndex="-1"
+                          onClick={() =>
+                            handleMenuItemClick("Declarations table")
+                          }
+                        >
+                          Declarations table
+                        </a>
+                      </Link>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        role="menuitem"
+                        tabIndex="-1"
+                        onClick={() => handleMenuItemClick("Delete")}
+                      >
+                        Trading License Table
+                      </a>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        role="menuitem"
+                        tabIndex="-1"
+                        onClick={() => handleMenuItemClick("Delete")}
+                      >
+                        user's Table
                       </a>
                     </div>
                   </div>
