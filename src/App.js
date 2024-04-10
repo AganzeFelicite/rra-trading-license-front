@@ -15,6 +15,8 @@ import DeclarationForm from "./components/Declaraion";
 
 import RoleBasedComponent from "./components/RoleBasedComponent";
 import DeclarationDetails from "./components/DeclarationTable";
+import TradingLisenceTaxTable from "./components/TradingLIsenceTable";
+import UserTable from "./components/userTable";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -82,7 +84,7 @@ function App() {
             />
             {userRole === "ADMIN" && (
               <Route
-                path="/trading-license"
+                path="/declaration-table"
                 element={
                   selectedMenuItem === "Declarations table" ? (
                     <DeclarationDetails />
@@ -92,6 +94,19 @@ function App() {
                 }
               />
             )}
+            {userRole === "ADMIN" && (
+              <Route
+                path="/trading-license-table"
+                element={
+                  selectedMenuItem === "Trading License Table" ? (
+                    <TradingLisenceTaxTable />
+                  ) : (
+                    <AdminDashBoard onMenuItemClick={handleMenuItemClick} />
+                  )
+                }
+              />
+            )}
+
             <Route
               path="/login"
               element={
@@ -102,6 +117,18 @@ function App() {
                 )
               }
             />
+            {userRole === "ADMIN" && (
+              <Route
+                path="/user-table"
+                element={
+                  selectedMenuItem === "user's Table" ? (
+                    <UserTable />
+                  ) : (
+                    <AdminDashBoard onMenuItemClick={handleMenuItemClick} />
+                  )
+                }
+              />
+            )}
             <Route path="/signup" element={<SignupForm />} />
             <Route path="/" element={<Navigate to="/login" />} />
           </Routes>

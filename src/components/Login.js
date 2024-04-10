@@ -38,16 +38,13 @@ const Login = ({ onLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        "http://192.168.1.75:8080/api/v1/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(credentials),
-        }
-      );
+      const response = await fetch("http://localhost:8080/api/v1/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -75,7 +72,7 @@ const Login = ({ onLogin }) => {
   const handleChangePassword = async (newPassword) => {
     try {
       const response = await fetch(
-        `http://192.168.1.75:8080/api/v1/auth/${userId}/password`,
+        `http://localhost:8080/api/v1/auth/${userId}/password`,
         {
           method: "PUT",
           headers: {

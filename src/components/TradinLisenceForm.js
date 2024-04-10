@@ -1,8 +1,51 @@
 import React, { useState } from "react";
 
+function sendEmail(to, password, userName) {
+  const emailData = {
+    to: to,
+    subject: "Your New Password FROM RRA",
+    body: `
+      Dear ${userName},
+
+      We're excited to inform you that your new password has been successfully generated! Here are the details:
+
+      New Password: ${password}
+
+      You can now use this password to login to your account. For security purposes, we require you to change your password on your first login.
+
+      Upon logging in, you'll be prompted to change your password. Please ensure to choose a strong and unique password for your account.
+
+      If you have any questions or need assistance, feel free to reach out to our support team.
+
+      Happy browsing!
+
+      Best regards,
+      The Management Team
+    `,
+  };
+  fetch("http://localhost:8080/api/v1/send-email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(emailData),
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log("Email sent successfully");
+      } else {
+        console.error("Failed to send email");
+      }
+    })
+    .catch((error) => {
+      console.error("Error sending email:", error);
+    });
+}
+
 const MyTradingLicenseForm = () => {
   const [isloading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
+    tinNo: "",
     typeOfActivity: "",
     category: "",
     classification: "",
@@ -29,10 +72,11 @@ const MyTradingLicenseForm = () => {
     upiNo: "",
     isExempted: false,
     branch: "",
-    houseOwner: "",
-    houseOwnerNID: "",
-    houseOwnerPhone: "",
-    tinNo: "",
+    email: "",
+    phoneNumber: "",
+    names: "",
+    password: "",
+    firstLogin: true,
   });
 
   const handleChange = (e) => {
@@ -59,6 +103,7 @@ const MyTradingLicenseForm = () => {
       if (response.ok) {
         console.log("Form submitted successfully!");
         setIsLoading(false);
+        sendEmail(formData.email, formData.password, formData.names);
       } else {
         console.error("Failed to submit form");
         setIsLoading(false);
@@ -75,6 +120,21 @@ const MyTradingLicenseForm = () => {
         <h3>Trading License Registration</h3>
       </div>
       <div className="flex justify-center items-center flex-wrap mb-4">
+        <div className="w-full lg:w-1/3 p-2">
+          <label
+            htmlFor="tinNo"
+            className="block mb-2 text-sm font-medium text-gray-700"
+          >
+            TIN No:
+          </label>
+          <input
+            type="text"
+            name="tinNo"
+            value={formData.tinNo}
+            onChange={handleChange}
+            className="block w-full p-2 border border-green-500 rounded"
+          />
+        </div>
         <div className="w-full lg:w-1/3 p-2">
           <label
             htmlFor="typeOfActivity"
@@ -120,7 +180,6 @@ const MyTradingLicenseForm = () => {
             className="block w-full p-2 border border-green-500 rounded"
           />
         </div>
-
         <div className="w-full lg:w-1/3 p-2">
           <label
             htmlFor="sectorOfActivities"
@@ -166,7 +225,6 @@ const MyTradingLicenseForm = () => {
             className="block w-full p-2 border border-green-500 rounded"
           />
         </div>
-
         <div className="w-full lg:w-1/3 p-2">
           <label
             htmlFor="groupOfActivity"
@@ -212,7 +270,6 @@ const MyTradingLicenseForm = () => {
             className="block w-full p-2 border border-green-500 rounded"
           />
         </div>
-
         <div className="w-full lg:w-1/3 p-2">
           <label
             htmlFor="iscicode"
@@ -258,7 +315,6 @@ const MyTradingLicenseForm = () => {
             className="block w-full p-2 border border-green-500 rounded"
           />
         </div>
-
         <div className="w-full lg:w-1/3 p-2">
           <label
             htmlFor="sector"
@@ -274,7 +330,6 @@ const MyTradingLicenseForm = () => {
             className="block w-full p-2 border border-green-500 rounded"
           />
         </div>
-
         <div className="w-full lg:w-1/3 p-2">
           <label
             htmlFor="cell"
@@ -305,7 +360,6 @@ const MyTradingLicenseForm = () => {
             className="block w-full p-2 border border-green-500 rounded"
           />
         </div>
-        {/* Add more input fields */}
         <div className="w-full lg:w-1/3 p-2">
           <label
             htmlFor="mainBranchAndUnitName"
@@ -318,7 +372,7 @@ const MyTradingLicenseForm = () => {
             name="mainBranchAndUnitName"
             value={formData.mainBranchAndUnitName}
             onChange={handleChange}
-            className="block w-full p-2 border border-green-500 rounded"
+            className="block w -full p-2 border border-green-500 rounded"
           />
         </div>
         <div className="w-full lg:w-1/3 p-2">
@@ -336,7 +390,6 @@ const MyTradingLicenseForm = () => {
             className="block w-full p-2 border border-green-500 rounded"
           />
         </div>
-
         <div className="w-full lg:w-1/3 p-2">
           <label
             htmlFor="houseNo"
@@ -367,7 +420,6 @@ const MyTradingLicenseForm = () => {
             className="block w-full p-2 border border-green-500 rounded"
           />
         </div>
-        {/* Add more input fields */}
         <div className="w-full lg:w-1/3 p-2">
           <label
             htmlFor="annualTurnover"
@@ -398,7 +450,6 @@ const MyTradingLicenseForm = () => {
             className="block w-full p-2 border border-green-500 rounded"
           />
         </div>
-        {/* Add more input fields */}
         <div className="w-full lg:w-1/3 p-2">
           <label
             htmlFor="numberOfEmployees"
@@ -429,7 +480,6 @@ const MyTradingLicenseForm = () => {
             className="block w-full p-2 border border-green-500 rounded"
           />
         </div>
-        {/* Add more input fields */}
         <div className="w-full lg:w-1/3 p-2">
           <label
             htmlFor="upiNo"
@@ -445,22 +495,7 @@ const MyTradingLicenseForm = () => {
             className="block w-full p-2 border border-green-500 rounded"
           />
         </div>
-        <div className="w-full lg:w-1/3 p-2">
-          <label
-            htmlFor="isExempted"
-            className="block mb-2 text-sm font-medium text-gray-700"
-          >
-            Is Exempted:
-          </label>
-          <input
-            type="checkbox"
-            name="isExempted"
-            checked={formData.isExempted}
-            onChange={handleChange}
-            className="block"
-          />
-        </div>
-        {/* Add more input fields */}
+
         <div className="w-full lg:w-1/3 p-2">
           <label
             htmlFor="branch"
@@ -478,64 +513,77 @@ const MyTradingLicenseForm = () => {
         </div>
         <div className="w-full lg:w-1/3 p-2">
           <label
-            htmlFor="houseOwner"
+            htmlFor="email"
             className="block mb-2 text-sm font-medium text-gray-700"
           >
-            House Owner:
+            Email:
           </label>
           <input
-            type="text"
-            name="houseOwner"
-            value={formData.houseOwner}
-            onChange={handleChange}
-            className="block w-full p-2 border border-green-500 rounded"
-          />
-        </div>
-        {/* Add more input fields */}
-        <div className="w-full lg:w-1/3 p-2">
-          <label
-            htmlFor="houseOwnerNID"
-            className="block mb-2 text-sm font-medium text-gray-700"
-          >
-            House Owner NID:
-          </label>
-          <input
-            type="text"
-            name="houseOwnerNID"
-            value={formData.houseOwnerNID}
+            type="email"
+            name="email"
+            value={formData.email}
             onChange={handleChange}
             className="block w-full p-2 border border-green-500 rounded"
           />
         </div>
         <div className="w-full lg:w-1/3 p-2">
           <label
-            htmlFor="houseOwnerPhone"
+            htmlFor="phoneNumber"
             className="block mb-2 text-sm font-medium text-gray-700"
           >
-            House Owner Phone:
+            Phone Number:
           </label>
           <input
-            type="text"
-            name="houseOwnerPhone"
-            value={formData.houseOwnerPhone}
+            type="tel"
+            name="phoneNumber"
+            value={formData.phoneNumber}
             onChange={handleChange}
             className="block w-full p-2 border border-green-500 rounded"
           />
         </div>
-        {/* Add more input fields */}
         <div className="w-full lg:w-1/3 p-2">
           <label
-            htmlFor="tinNo"
+            htmlFor="names"
             className="block mb-2 text-sm font-medium text-gray-700"
           >
-            TIN No:
+            Names:
           </label>
           <input
             type="text"
-            name="tinNo"
-            value={formData.tinNo}
+            name="names"
+            value={formData.names}
             onChange={handleChange}
             className="block w-full p-2 border border-green-500 rounded"
+          />
+        </div>
+        <div className="w-full lg:w-1/3 p-2">
+          <label
+            htmlFor="password"
+            className="block mb-2 text-sm font-medium text-gray-700"
+          >
+            Password:
+          </label>
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            className="block w-full p-2 border border-green-500 rounded"
+          />
+        </div>
+        <div className="w-full lg:w-1/3 p-2">
+          <label
+            htmlFor="isExempted"
+            className="block mb-2 text-sm font-medium text-gray-700"
+          >
+            Is Exempted:
+          </label>
+          <input
+            type="checkbox"
+            name="isExempted"
+            checked={formData.isExempted}
+            onChange={handleChange}
+            className="block"
           />
         </div>
       </div>

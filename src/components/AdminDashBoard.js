@@ -80,7 +80,7 @@ const AdminDashboard = ({ onMenuItemClick }) => {
                       >
                         Delete
                       </a>
-                      <Link to="/trading-license">
+                      <Link to="/declaration-table">
                         <a
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
@@ -92,24 +92,31 @@ const AdminDashboard = ({ onMenuItemClick }) => {
                           Declarations table
                         </a>
                       </Link>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        role="menuitem"
-                        tabIndex="-1"
-                        onClick={() => handleMenuItemClick("Delete")}
-                      >
-                        Trading License Table
-                      </a>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        role="menuitem"
-                        tabIndex="-1"
-                        onClick={() => handleMenuItemClick("Delete")}
-                      >
-                        user's Table
-                      </a>
+
+                      <Link to="/trading-license-table">
+                        <a
+                          href="#"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                          tabIndex="-1"
+                          onClick={() =>
+                            handleMenuItemClick("Trading License Table")
+                          }
+                        >
+                          Trading License Table
+                        </a>
+                      </Link>
+                      <Link to="/user-table">
+                        <a
+                          href="#"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                          tabIndex="-1"
+                          onClick={() => handleMenuItemClick("user's Table")}
+                        >
+                          user's Table
+                        </a>
+                      </Link>
                     </div>
                   </div>
                 )}
