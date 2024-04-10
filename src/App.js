@@ -17,6 +17,7 @@ import RoleBasedComponent from "./components/RoleBasedComponent";
 import DeclarationDetails from "./components/DeclarationTable";
 import TradingLisenceTaxTable from "./components/TradingLIsenceTable";
 import UserTable from "./components/userTable";
+import UserLogin from "./components/UserLogin";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -106,7 +107,7 @@ function App() {
                 }
               />
             )}
-
+            <Route path="/client-login" element={<UserLogin />} />
             <Route
               path="/login"
               element={

@@ -1,25 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import LogoImage from "../assets/Rwanda-Revenue-Authority-logo.png";
 import { Link } from "react-router-dom";
+import { UserContext } from "../Auth/UserAuth";
 
 const Header = ({ isLoggedIn, onLogout }) => {
   // Add onLogout prop
+  const { user, token, role } = useContext(UserContext);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [user, setUser] = useState("");
-  useEffect(() => {
-    const userString = localStorage.getItem("user");
-    if (userString !== null) {
-      try {
-        const user = JSON.parse(userString);
-        setUser(user);
-      } catch (error) {
-        console.error("Error parsing user data:", error);
-        setUser(null);
-      }
-    } else {
-      setUser(null);
-    }
-  }, []);
+  // const [user, setUser] = useState("");
+  // useEffect(() => {
+  //   const userString = localStorage.getItem("user");
+  //   if (userString !== null) {
+  //     try {
+  //       const user = JSON.parse(userString);
+
+  //     } catch (error) {
+  //       console.error("Error parsing user data:", error);
+
+  //     }
+  //   } else {
+  //     setUser(null);
+  //   }
+  // }, []);
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());

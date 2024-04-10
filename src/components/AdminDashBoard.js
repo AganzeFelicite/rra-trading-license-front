@@ -1,15 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../Auth/UserAuth";
 
 const AdminDashboard = ({ onMenuItemClick }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-
-  const [userRole, setUserRole] = useState(null);
-
-  useEffect(() => {
-    const storedRole = localStorage.getItem("role");
-    setUserRole(storedRole);
-  }, []);
+  const { role: userRole } = useContext(UserContext);
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);

@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Modal from "react-modal";
+import { UserContext } from "../Auth/UserAuth";
+import { Link } from "react-router-dom";
 
 Modal.setAppElement("#root");
 const Login = ({ onLogin }) => {
+  const { updateUser } = useContext(UserContext);
   const [error, setError] = useState(null);
   const [newPassword, setNewPassword] = useState("");
   const [credentials, setCredentials] = useState({
@@ -14,7 +17,6 @@ const Login = ({ onLogin }) => {
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
     useState(false);
   const [userId, setUserId] = useState(null);
-
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const openChangePasswordModal = (userId) => {
@@ -51,11 +53,12 @@ const Login = ({ onLogin }) => {
         if (data.user.firstLogin) {
           openChangePasswordModal(data.user.userId);
         } else {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("user", JSON.stringify(data.user));
-          localStorage.setItem("role", data.user.role);
+          updateUser(data.user, data.token, data.user.role);
+
           onLogin(true, data.user.role);
+
           setError(null);
+          closeChangePasswordModal();
         }
       } else if (response.status === 404) {
         const data = await response.json();
@@ -84,9 +87,8 @@ const Login = ({ onLogin }) => {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("role", data.user.role);
+        // Update the context with user data, token, and role
+        updateUser(data.user, data.token, data.user.role);
         onLogin(true, data.user.role);
         setError(null);
         closeChangePasswordModal();
@@ -163,6 +165,11 @@ const Login = ({ onLogin }) => {
             placeholder="Enter your password"
             required
           />
+        </div>
+        <div className="mb-4">
+          <Link to="/client-login">
+            <h4>Click here for client login</h4>
+          </Link>
         </div>
         <div className="flex items-center justify-center">
           <button
