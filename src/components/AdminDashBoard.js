@@ -23,13 +23,13 @@ const AdminDashboard = ({ onMenuItemClick }) => {
             <h4>Local government Tax</h4>
           </div>
           <div className="flex">
-            {userRole === "ADMIN" && (
+            {
               <button
                 onClick={toggleDropdown}
                 className="bg-green-950 hover:bg-lime-300 text-white font-bold py-2 px-4 rounded m-2"
                 aria-haspopup="true"
               >
-                Registration
+                Services
                 {isDropdownOpen && (
                   <div>
                     <div
@@ -39,15 +39,17 @@ const AdminDashboard = ({ onMenuItemClick }) => {
                       aria-labelledby="menu-button"
                       tabIndex="-1"
                     >
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        role="menuitem"
-                        tabIndex="-1"
-                        onClick={() => handleMenuItemClick("Trading License")}
-                      >
-                        Trading License
-                      </a>
+                      {userRole === "ADMIN" && (
+                        <a
+                          href="#"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                          tabIndex="-1"
+                          onClick={() => handleMenuItemClick("Trading License")}
+                        >
+                          Trading License
+                        </a>
+                      )}
                       <a
                         href="#"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -57,15 +59,32 @@ const AdminDashboard = ({ onMenuItemClick }) => {
                       >
                         Other Taxes
                       </a>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        role="menuitem"
-                        tabIndex="-1"
-                        onClick={() => handleMenuItemClick("New Users")}
-                      >
-                        New Users
-                      </a>
+                      {userRole === "ADMIN" && (
+                        <a
+                          href="#"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                          tabIndex="-1"
+                          onClick={() => handleMenuItemClick("New Users")}
+                        >
+                          New Users
+                        </a>
+                      )}
+                      {userRole === "user" && (
+                        <Link to="/my-declarations">
+                          <a
+                            href="#"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            role="menuitem"
+                            tabIndex="-1"
+                            onClick={() =>
+                              handleMenuItemClick("My declarations")
+                            }
+                          >
+                            My declarations
+                          </a>
+                        </Link>
+                      )}
                       <a
                         href="#"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -102,21 +121,23 @@ const AdminDashboard = ({ onMenuItemClick }) => {
                         </a>
                       </Link>
                       <Link to="/user-table">
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                          tabIndex="-1"
-                          onClick={() => handleMenuItemClick("user's Table")}
-                        >
-                          user's Table
-                        </a>
+                        {userRole === "ADMIN" && (
+                          <a
+                            href="#"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            role="menuitem"
+                            tabIndex="-1"
+                            onClick={() => handleMenuItemClick("user's Table")}
+                          >
+                            user's Table
+                          </a>
+                        )}
                       </Link>
                     </div>
                   </div>
                 )}
               </button>
-            )}
+            }
             <button
               className="bg-green-950 hover:bg-lime-300 text-white font-bold py-2 px-4 rounded m-2"
               onClick={() => handleMenuItemClick("declaration")}

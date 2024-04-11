@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 const TradingLicenseDeclaration = ({ declaration }) => {
   const [fiscalYear, setFiscalYear] = useState(2024);
   const [vatTurnover, setVatTurnover] = useState(0);
-  const [taxDue, setTaxDue] = useState(55000);
+  const [taxDue, setTaxDue] = useState(20000);
   const [month, setMonth] = useState("December");
   const [entriesTrue, setEntriesTrue] = useState(true);
   const [token, setToken] = useState(null);
@@ -18,23 +18,59 @@ const TradingLicenseDeclaration = ({ declaration }) => {
     let calculatedTaxDue;
     let tempVatTurnover = vatTurnover;
     console.log(declaration);
-    const taxBrackets = [
-      { threshold: 20000000, rate: 0.03 },
-      { threshold: 60000000, rate: 0.15 },
-      { threshold: Infinity, rate: 0.18 },
-    ];
+    // const taxBrackets = [
+    //   { threshold: 20000000, rate: 0.03 },
+    //   { threshold: 60000000, rate: 0.15 },
+    //   { threshold: Infinity, rate: 0.18 },
+    // ];
 
-    for (const bracket of taxBrackets) {
-      if (tempVatTurnover <= bracket.threshold) {
-        calculatedTaxDue = tempVatTurnover * bracket.rate;
-        break;
-      } else {
-        calculatedTaxDue = bracket.threshold * bracket.rate;
-        tempVatTurnover -= bracket.threshold;
-      }
+    if (tempVatTurnover < 2000000) {
+      calculatedTaxDue = 30000;
+      setTaxDue(`${calculatedTaxDue}   rwf`);
+      return;
+    } else if (tempVatTurnover >= 2000000 && tempVatTurnover <= 7000000) {
+      calculatedTaxDue = 100000;
+      setTaxDue(`${calculatedTaxDue}   rwf`);
+      return;
+    } else if (tempVatTurnover >= 7000001 && tempVatTurnover <= 12000000) {
+      calculatedTaxDue = 120000;
+      setTaxDue(`${calculatedTaxDue}   rwf`);
+      return;
+    } else if (tempVatTurnover >= 12000001 && tempVatTurnover <= 20000000) {
+      calculatedTaxDue = 160000;
+      setTaxDue(`${calculatedTaxDue}   rwf`);
+      return;
+    } else if (tempVatTurnover >= 20000001 && tempVatTurnover <= 200000000) {
+      calculatedTaxDue = 280000;
+      setTaxDue(`${calculatedTaxDue}   rwf`);
+      return;
+    } else if (tempVatTurnover >= 200000001 && tempVatTurnover <= 1000000000) {
+      calculatedTaxDue = 500000;
+      setTaxDue(`${calculatedTaxDue}   rwf`);
+      return;
+    } else if (
+      tempVatTurnover >= 1000000001 &&
+      tempVatTurnover <= 25000000000
+    ) {
+      calculatedTaxDue = 1000000;
+      setTaxDue(`${calculatedTaxDue}   rwf`);
+      return;
+    } else if (
+      tempVatTurnover >= 25000000001 &&
+      tempVatTurnover <= 50000000000
+    ) {
+      calculatedTaxDue = 1500000;
+      setTaxDue(`${calculatedTaxDue}   rwf`);
+      return;
+    } else if (tempVatTurnover >= 50000000001) {
+      calculatedTaxDue = 2000000;
+      setTaxDue(`${calculatedTaxDue}   rwf`);
+      return;
+    } else {
+      calculatedTaxDue = 30000;
+      setTaxDue(`${calculatedTaxDue}   rwf`);
+      return;
     }
-
-    setTaxDue(calculatedTaxDue);
   };
   const handleCalculateTax = () => {
     calculateTaxDue();
@@ -109,7 +145,7 @@ const TradingLicenseDeclaration = ({ declaration }) => {
           20-Tax Due
         </label>
         <input
-          type="number"
+          type="text"
           value={taxDue}
           onChange={(e) => setTaxDue(e.target.value)}
           className="border-2 border-green-900 p-2 w-full"

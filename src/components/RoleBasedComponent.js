@@ -14,7 +14,10 @@ const RoleBasedComponent = ({ role, selectedMenuItem }) => {
     if (selectedMenuItem === "New Users") {
       return <SignupForm />;
     }
-  } else if (role === "USER" && selectedMenuItem === "declaration") {
+  } else if (
+    role === "USER" ||
+    (role === "user" && selectedMenuItem === "declaration")
+  ) {
     return <DeclarationForm />;
   }
   return null;

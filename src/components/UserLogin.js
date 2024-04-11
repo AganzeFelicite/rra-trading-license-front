@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Modal from "react-modal";
 import { Link } from "react-router-dom";
+import { UserContext } from "../Auth/UserAuth";
 
 Modal.setAppElement("#root");
 const UserLogin = ({ onLogin }) => {
+  const { tradingLisenceTax } = useContext(UserContext);
+  const { updateRole } = useContext(UserContext);
   const [error, setError] = useState(null);
   const [newPassword, setNewPassword] = useState("");
   const [credentials, setCredentials] = useState({
@@ -13,12 +16,12 @@ const UserLogin = ({ onLogin }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
     useState(false);
-  const [userId, setUserId] = useState(null);
+  const [id, setId] = useState(null);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  const openChangePasswordModal = (userId) => {
-    setUserId(userId);
+  const openChangePasswordModal = (id) => {
+    setId(id);
     setIsChangePasswordModalOpen(true);
   };
   const closeChangePasswordModal = () => setIsChangePasswordModalOpen(false);
@@ -37,24 +40,32 @@ const UserLogin = ({ onLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(JSON.stringify(credentials));
     try {
-      const response = await fetch("http://localhost:8080/api/v1/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
+      const response = await fetch(
+        "http://localhost:8080/api/v1/trading-lisence-users/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(credentials),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
-        if (data.user.firstLogin) {
-          openChangePasswordModal(data.user.userId);
+        if (data.tradingLisenceTax.firstLogin) {
+          openChangePasswordModal(data.tradingLisenceTax.id);
+          console.log(data);
         } else {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("user", JSON.stringify(data.user));
-          localStorage.setItem("role", data.user.role);
-          onLogin(true, data.user.role);
+          tradingLisenceTax(
+            data.tradingLisenceTax.tinNo,
+            data.tradingLisenceTax.names
+          );
+          updateRole("user");
+          onLogin(true, "user");
+          console.log(data);
           setError(null);
         }
       } else if (response.status === 404) {
@@ -70,9 +81,11 @@ const UserLogin = ({ onLogin }) => {
   };
 
   const handleChangePassword = async (newPassword) => {
+    console.log(newPassword);
+    console.log(id);
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/auth/${userId}/password`,
+        `http://localhost:8080/api/v1/trading-lisence-users/${id}/update-password`,
         {
           method: "PUT",
           headers: {
@@ -84,12 +97,8 @@ const UserLogin = ({ onLogin }) => {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("role", data.user.role);
-        onLogin(true, data.user.role);
-        setError(null);
         closeChangePasswordModal();
+        console.log(data);
       } else {
         setError("Failed to change password. Please try again.");
         openModal();

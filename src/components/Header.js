@@ -5,7 +5,8 @@ import { UserContext } from "../Auth/UserAuth";
 
 const Header = ({ isLoggedIn, onLogout }) => {
   // Add onLogout prop
-  const { user, token, role } = useContext(UserContext);
+  const { user, token, role, userInfo } = useContext(UserContext);
+  // const { userInfo } = useContext(UserContext);
   const [currentTime, setCurrentTime] = useState(new Date());
   // const [user, setUser] = useState("");
   // useEffect(() => {
@@ -64,13 +65,15 @@ const Header = ({ isLoggedIn, onLogout }) => {
           <h1>Welcome to RLGMS</h1>
         </div>
         <div className="text-yellow-400">
-          <h4>
-            Logged in:{" "}
-            {user && isLoggedIn
-              ? user["firstName"] + " " + user["lastName"]
-              : "No user logined in"}
-          </h4>{" "}
-          {/* Corrected spelling */}
+          {isLoggedIn && user ? (
+            <h4>
+              Logged in: {user.firstName} {user.lastName}
+            </h4>
+          ) : userInfo ? (
+            <h4> Logged in: {userInfo.names}</h4>
+          ) : (
+            <h4>No user logged in</h4>
+          )}
           <div>{currentTime.toString()}</div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,17 +12,19 @@ import Footer from "./components/Footer";
 import Login from "./components/Login";
 import SignupForm from "./components/Signup";
 import DeclarationForm from "./components/Declaraion";
-
+import MyDeclarations from "./components/MyDeclarations";
 import RoleBasedComponent from "./components/RoleBasedComponent";
 import DeclarationDetails from "./components/DeclarationTable";
 import TradingLisenceTaxTable from "./components/TradingLIsenceTable";
 import UserTable from "./components/userTable";
 import UserLogin from "./components/UserLogin";
+import { UserContext } from "./Auth/UserAuth";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
   const [userRole, setUserRole] = useState(null);
+  const { logout } = useContext(UserContext);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -55,6 +57,7 @@ function App() {
   };
 
   const handleLogout = () => {
+    logout();
     setIsLoggedIn(false);
     setSelectedMenuItem(null);
     setUserRole(null);
@@ -107,7 +110,29 @@ function App() {
                 }
               />
             )}
-            <Route path="/client-login" element={<UserLogin />} />
+            {userRole === "user" && (
+              <Route
+                path="/my-declarations"
+                element={
+                  selectedMenuItem === "My declarations" ? (
+                    <MyDeclarations />
+                  ) : (
+                    <AdminDashBoard onMenuItemClick={handleMenuItemClick} />
+                  )
+                }
+              />
+            )}
+
+            <Route
+              path="/client-login"
+              element={
+                !isLoggedIn ? (
+                  <UserLogin onLogin={handleLogin} />
+                ) : (
+                  <Navigate to="/dashboard" />
+                )
+              }
+            />
             <Route
               path="/login"
               element={

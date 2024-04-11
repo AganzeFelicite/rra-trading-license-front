@@ -87,11 +87,12 @@ const MyTradingLicenseForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
 
+    setIsLoading(true);
+    console.log(JSON.stringify(formData));
     try {
       const response = await fetch(
-        "http://127.0.0.1:8080/api/v1/trading-lisence/register",
+        "http://127.0.0.1:8080/api/v1/trading-lisence-users/register",
         {
           method: "POST",
           headers: {
