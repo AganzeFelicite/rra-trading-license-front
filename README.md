@@ -89,5 +89,3 @@ This project is used by the following companies, i did this project for internsh
 - Rwanda Revenue Authority(RRA)
 
 
-![login](https://github.com/AganzeFelicite/rra-trading-license-front/blob/main/images/login.png?raw=true)
-
