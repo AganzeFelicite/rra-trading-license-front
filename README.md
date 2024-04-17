@@ -20,6 +20,10 @@ PLEASE ENSURE TO RUN THE SERVER , FROM THE SPRING BOOT IN THIS REPOSITORY
 
 
 **Testing** Used PostMan for api test
+
+**Security*** Spring security
+
+**Database**  POSTGRES
 ## Installation
 
 clone the repository
