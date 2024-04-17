@@ -85,40 +85,36 @@ const AdminDashboard = ({ onMenuItemClick }) => {
                           </a>
                         </Link>
                       )}
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        role="menuitem"
-                        tabIndex="-1"
-                        onClick={() => handleMenuItemClick("Delete")}
-                      >
-                        Delete
-                      </a>
+
                       <Link to="/declaration-table">
-                        <a
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                          tabIndex="-1"
-                          onClick={() =>
-                            handleMenuItemClick("Declarations table")
-                          }
-                        >
-                          Declarations table
-                        </a>
+                        {userRole === "ADMIN" && (
+                          <a
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            role="menuitem"
+                            tabIndex="-1"
+                            onClick={() =>
+                              handleMenuItemClick("Declarations table")
+                            }
+                          >
+                            Declarations table
+                          </a>
+                        )}
                       </Link>
 
                       <Link to="/trading-license-table">
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                          tabIndex="-1"
-                          onClick={() =>
-                            handleMenuItemClick("Trading License Table")
-                          }
-                        >
-                          Trading License Table
-                        </a>
+                        {userRole === "ADMIN" && (
+                          <a
+                            href="#"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            role="menuitem"
+                            tabIndex="-1"
+                            onClick={() =>
+                              handleMenuItemClick("Trading License Table")
+                            }
+                          >
+                            Trading License Table
+                          </a>
+                        )}
                       </Link>
                       <Link to="/user-table">
                         {userRole === "ADMIN" && (

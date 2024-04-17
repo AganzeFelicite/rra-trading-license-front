@@ -56,6 +56,8 @@ const MyDeclarations = () => {
   const handlePdfGenerate = (declaration) => {
     setSelectedDeclaration(declaration);
   };
+  console.log(userInfo.tinNo);
+  console.log(data);
 
   const DeclarationPDF = ({ declaration }) => (
     <Document>
@@ -172,10 +174,10 @@ const MyDeclarations = () => {
                 <th className="w-1/14 px-4 py-2" data-column="Status">
                   Status
                 </th>
-                <th className="w-1/8 px-4" data-column="Acknowledgement">
-                  Acknowledgement
+                <th className="w-1/14 px-4 py-2" data-column="Acknowledgement">
+                  Acknowl edgement
                 </th>
-                <th className="w-1/8 px-4 py-2" data-column="Tax To Be Paid">
+                <th className="w-1/12 px-4 py-2" data-column="Tax To Be Paid">
                   Tax To Be Paid
                 </th>
                 <th className="w-1/14 px-4 py-2" data-column="TIN">

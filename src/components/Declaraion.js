@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import TradingLicenseDeclaration from "./TaxDeclarationForm";
+import { UserContext } from "../Auth/UserAuth";
 
 const DeclarationForm = () => {
   const [isloading, setIsLoading] = useState(false);
   const [isSubmited, setIsSubmited] = useState(false);
   const [linkClicked, setLinkClicked] = useState(false);
   const [token, setToken] = useState(null);
+  const { userInfo } = useContext(UserContext);
   const [formData, setFormData] = useState({
     tinNo: "",
     nationalId: "",
@@ -20,6 +22,19 @@ const DeclarationForm = () => {
     const token = localStorage.getItem("token");
     setToken(token);
   }, []);
+  const [isTinNoPresent, setIsTinNoPresent] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setToken(token);
+
+    const isTinNoPresentTemp = userInfo && userInfo.tinNo;
+    setIsTinNoPresent(isTinNoPresentTemp);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      tinNo: isTinNoPresentTemp ? userInfo.tinNo : "",
+    }));
+  }, [userInfo]);
   const [declared, setDeclared] = useState(null);
   const handleChange = (e) => {
     const value =
@@ -80,8 +95,13 @@ const DeclarationForm = () => {
                 type="text"
                 name="tinNo"
                 value={formData.tinNo}
-                onChange={handleChange}
-                className="block w-full p-2 border border-green-500 rounded"
+                onChange={isTinNoPresent ? undefined : handleChange}
+                className={`block w-full p-2 border border-green-500 rounded ${
+                  isTinNoPresent
+                    ? "bg-gray-200 text-black cursor-not-allowed"
+                    : ""
+                }`}
+                readOnly={isTinNoPresent}
               />
             </div>
             <div className="w-full lg:w-1/2 p-2">

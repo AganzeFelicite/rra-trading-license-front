@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useFetch from "../Hooks/useFetch";
 
 function sendEmail(to, password, userName) {
   const emailData = {
@@ -44,6 +45,8 @@ function sendEmail(to, password, userName) {
 
 const MyTradingLicenseForm = () => {
   const [isloading, setIsLoading] = useState(false);
+  const url = "http://127.0.0.1:8080/api/v1/tinNo";
+  const { data, isPending, error } = useFetch(url);
   const [formData, setFormData] = useState({
     tinNo: "",
     typeOfActivity: "",
@@ -79,6 +82,7 @@ const MyTradingLicenseForm = () => {
     firstLogin: true,
   });
 
+  console.log(data);
   const handleChange = (e) => {
     const value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
@@ -89,7 +93,7 @@ const MyTradingLicenseForm = () => {
     e.preventDefault();
 
     setIsLoading(true);
-    console.log(JSON.stringify(formData));
+
     try {
       const response = await fetch(
         "http://127.0.0.1:8080/api/v1/trading-lisence-users/register",
@@ -131,9 +135,13 @@ const MyTradingLicenseForm = () => {
           <input
             type="text"
             name="tinNo"
-            value={formData.tinNo}
+            value={(formData.tinNo = data)}
             onChange={handleChange}
-            className="block w-full p-2 border border-green-500 rounded"
+            className="block w-full p-2 border border-green-500 rounded cursor-not-allowed disabled bg-gray-200
+           
+            cursor-not-allowed
+            readonly"
+            disabled
           />
         </div>
         <div className="w-full lg:w-1/3 p-2">

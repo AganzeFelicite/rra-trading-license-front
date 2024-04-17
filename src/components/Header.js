@@ -46,11 +46,11 @@ const Header = ({ isLoggedIn, onLogout }) => {
             </button>
           ) : (
             <div className="flex space-x-4">
-              <Link to={"/signup"}>
+              {/* <Link to={"/signup"}>
                 <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                   Sign Up
                 </button>
-              </Link>
+              </Link> */}
               <Link to={"/login"}>
                 <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                   Login

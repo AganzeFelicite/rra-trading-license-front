@@ -86,10 +86,11 @@ const TradingLicenseDeclaration = ({ declaration }) => {
     }
 
     // Update declaration object with new properties
-    declaration.dueTax = taxDue;
-    declaration.turnOver = vatTurnover;
+    declaration.taxTobePaid = parseFloat(taxDue);
+    declaration.turnOver = parseFloat(vatTurnover);
 
     try {
+      console.log(JSON.stringify(declaration));
       const response = await fetch(
         `http://127.0.0.1:8080/api/v1/update-declaration/${declaration.id}`,
         {
