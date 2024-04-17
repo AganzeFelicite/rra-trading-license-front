@@ -87,6 +87,7 @@ const TradingLicenseDeclaration = ({ declaration }) => {
 
     // Update declaration object with new properties
     declaration.taxTobePaid = parseFloat(taxDue);
+    declaration.dueTax = parseFloat(taxDue);
     declaration.turnOver = parseFloat(vatTurnover);
 
     try {
