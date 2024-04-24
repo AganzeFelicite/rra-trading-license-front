@@ -67,10 +67,16 @@ Trading license registration
 Table of A declared 
 ![](https://github.com/AganzeFelicite/rra-trading-license-front/blob/main/images/table.png)
 
+Admin ability to create new users
+![](https://github.com/AganzeFelicite/rra-trading-license-front/blob/main/images/creaing%20users.png)
 
 
 Table of A declared 
 ![](https://github.com/AganzeFelicite/rra-trading-license-front/blob/main/images/declarationTable.png)
+
+Table of all users 
+![](https://github.com/AganzeFelicite/rra-trading-license-front/blob/main/images/Screenshot%20from%202024-04-17%2011-28-37.png)
+
 
 
 Tax calculator
