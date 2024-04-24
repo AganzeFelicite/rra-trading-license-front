@@ -52,18 +52,25 @@ The page will reload when you make changes.\
 ![App login Page](https://github.com/AganzeFelicite/rra-trading-license-front/blob/main/images/login.png)
 
 failled login attempt
-![failedLogin](https://raw.githubusercontent.com/AganzeFelicite/rra-trading-license-front/main/images/failedLogin.png?token=GHSAT0AAAAAACQEFWSTWY35RC7HRWLNOJE4ZQ7U5YQ)
+![failedLogin](https://github.com/AganzeFelicite/rra-trading-license-front/blob/main/images/failedLogin.png)
 
 
 dashbord
-![dashbord](https://raw.githubusercontent.com/AganzeFelicite/rra-trading-license-front/main/images/dashbord.png?token=GHSAT0AAAAAACQEFWST6WKYHXPQG76OP5S2ZQ7U6ZA)
+![dashbord](https://github.com/AganzeFelicite/rra-trading-license-front/blob/main/images/dashbord.png)
 
 Tax declaration Form
-![Tax declaration table](https://raw.githubusercontent.com/AganzeFelicite/rra-trading-license-front/main/images/tradingLisenceRegistration.png?token=GHSAT0AAAAAACQEFWSSEVLIMEZFVP2WYRHYZQ7VBQA)
+![Tax declaration table](https://github.com/AganzeFelicite/rra-trading-license-front/blob/main/images/declaration.png)
+
+Trading license registration
+![](https://github.com/AganzeFelicite/rra-trading-license-front/blob/main/images/tradingLisenceRegistration.png)
+
+Table of A declared 
+![](https://github.com/AganzeFelicite/rra-trading-license-front/blob/main/images/table.png)
+
 
 
 Table of A declared 
-![](https://raw.githubusercontent.com/AganzeFelicite/rra-trading-license-front/main/images/table.png?token=GHSAT0AAAAAACQEFWSSN5ODET4OED3M4US2ZQ7VDGQ)
+![](https://github.com/AganzeFelicite/rra-trading-license-front/blob/main/images/declarationTable.png)
 
 
 Tax calculator
@@ -71,7 +78,7 @@ Tax calculator
 
 
 Admin can manage users
-![](https://raw.githubusercontent.com/AganzeFelicite/rra-trading-license-front/main/images/creaing%20users.png?token=GHSAT0AAAAAACQEFWSSYRDVC2XIBGQLRVOWZQ7VICQ)
+![](https://github.com/AganzeFelicite/rra-trading-license-front/blob/main/images/calculator.png)
 ## 🚀 About Me
 I'm a full stack developer...
 
